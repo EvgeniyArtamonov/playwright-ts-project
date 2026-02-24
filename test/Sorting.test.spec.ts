@@ -1,68 +1,50 @@
-import { test, expect } from "@playwright/test";
-import ProductsPage from "../page/Products.page";
+import { expect, test } from "@playwright/test";
 import LoginPage from "../page/Login.page";
-import * as users from "../data/credentials.json";
+import ProductsPage from "../page/Products.page";
 import { Select } from "../utils/enums/select.enum";
+import * as users from "../data/credentials.json";
 import * as utility from "../utils/utility-methods";
 
-
-test.describe("Sorting Feature. @sorting", async () => {
-
-    let loginPage: LoginPage;
+test.describe("Sorting Feature @sorting", () => {
     let productsPage: ProductsPage;
 
     test.beforeEach(async ({ page, baseURL }) => {
-        loginPage = new LoginPage(page);
-        await page.goto(`${baseURL}`);
+        const loginPage = new LoginPage(page);
+        await page.goto(baseURL || "https://www.saucedemo.com/");
         await loginPage.enterUsername(users.standard.username);
         await loginPage.enterPassword(users.standard.password);
         await loginPage.clickLoginButon();
         productsPage = new ProductsPage(page);
         expect(await productsPage.getTitle).toBe("Products");
-    })
+    });
 
-    test("Positive: User can sort the products by price (low to high).", async ({ page }) => {
-        //Select sorting by Price(low to high)
+    /*
+     Лайвкодинг-задача (приоритет 3):
+     - В beforeEach: залогинься как standard user и проверь, что открыта страница Products.
+     - Меняй сортировку через значения dropdown: lohi, hilo, az, za.
+     - Проверяй, что порядок товаров на UI совпадает с ожидаемой сортировкой.
+     - Можно переиспользовать методы из utils/utility-methods.ts.
+    */
+
+    // Задание: выбрать "lohi" и проверить, что цены отсортированы по возрастанию.
+    test("Позитивный: пользователь сортирует товары по цене (по возрастанию).", async () => {
         await productsPage.selectByValue("lohi", Select.SORT);
 
-        //get all prices on a page
-        const productsPrices = utility.convertStringArrayIntoNumberArray(await productsPage.getProductsPrice());
-        const sortedPrices = utility.sortPriceASC(productsPrices);
-        const haveSameOrder = utility.compareNumArrays(productsPrices, sortedPrices);
-        expect(haveSameOrder).toBe(true);
+        const prices = utility.convertStringArrayIntoNumberArray(await productsPage.getProductsPrice());
+        const sorted = [...prices].sort((a, b) => a - b);
+
+        expect(prices).toEqual(sorted);
     });
-
-    test("Positive: User can sort the products by price (high to low).", async ({ page }) => {
-        //Select sorting by Price(low to high)
-        await productsPage.selectByValue("hilo", Select.SORT);
-
-        //get all prices on a page
-        const productsPrices = utility.convertStringArrayIntoNumberArray(await productsPage.getProductsPrice());
-        const sortedPrices = utility.sortPriceDESC(productsPrices);
-        const haveSameOrder = utility.compareNumArrays(productsPrices, sortedPrices);
-        expect(haveSameOrder).toBe(true);
+    // Задание: выбрать "hilo" и проверить, что цены отсортированы по убыванию.
+    test.skip("Позитивный: пользователь сортирует товары по цене (по убыванию).", async () => {
+        // TODO: реализовать во время лайвкодинга.
     });
-
-    test("Positive: User can sort the products by name (a to z).", async ({ page }) => {
-        //Select ASC sorting by Name(A-Z)
-        await productsPage.selectByValue("az", Select.SORT);
-
-        //get all titles on a page
-        const productsTitles = await productsPage.getProductsNames();
-        const sortedTitles = utility.sortAlphabeticallyASC(productsTitles);
-        const haveSameOrder = utility.compareStringArraysWithOrder(productsTitles, sortedTitles);
-        expect(haveSameOrder).toBe(true);
+    // Задание: выбрать "az" и проверить, что названия отсортированы по алфавиту (A-Z).
+    test.skip("Позитивный: пользователь сортирует товары по названию (A-Z).", async () => {
+        // TODO: реализовать во время лайвкодинга.
     });
-
-    test("Positive: User can sort the products by name (z to a).", async ({ page }) => {
-        //Select DESC sorting by Name(Z-A)
-        await productsPage.selectByValue("za", Select.SORT);
-
-        //get all titles on a page
-        const productsTitles = await productsPage.getProductsNames();
-        const sortedTitles = utility.sortAlphabeticallyDESC(productsTitles);
-        const haveSameOrder = utility.compareStringArraysWithOrder(productsTitles, sortedTitles);
-        expect(haveSameOrder).toBe(true);
+    // Задание: выбрать "za" и проверить, что названия отсортированы по алфавиту (Z-A).
+    test.skip("Позитивный: пользователь сортирует товары по названию (Z-A).", async () => {
+        // TODO: реализовать во время лайвкодинга.
     });
-
-})
+});

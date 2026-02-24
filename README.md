@@ -1,44 +1,87 @@
-<h1>
-  Practice test automation with <a href="https://playwright.dev/"> <img width="140" alt="Playwright Logo" src="https://raw.githubusercontent.com/github/explore/60cd2530141f67f07a947fa2d310c482e287e387/topics/playwright/playwright.png" /> </a> on <a href="https://www.saucedemo.com/">Swag Labs</a>
-</h1>
+# Playwright TypeScript: задание для лайвкодинга
 
-> **Note**
->
-> +  **<a href="https://www.demoblaze.com/">Swag Labs</a>** is basic online store with required login from Sauce Labs. Great for example web UI tests.
->
-## PLaywright features
-End to End testing using:
+Этот репозиторий подготовлен как лайвкодинг-задача по QA automation для
+https://www.saucedemo.com/.
 
-- Playwright https://playwright.dev/
-- TypeScript https://www.typescriptlang.org/
+Готовые тесты удалены и заменены на `test.skip(...)` заглушки для лайвкодинга.
 
-This tests are purely for Playwright features practice, usage of Page Object Model.
+## Стек
 
-## Getting Started
+- Playwright Test
+- TypeScript
+- Page Object Model
 
-### Prerequisites
-Install Playwright and browser binaries for Chromium, Firefox and WebKit.
-```shell
-npm i -D playwright
+## Установка
+
+```sh
+npm run setup
 ```
-You need to have Node.js installed.
 
-## Useful Commands
+Требование к Node.js: `>=18.18.0`.
 
-### Run All Tests
+## Команды запуска
 
-```shell
+```sh
 npm run play:test
-```
-### Run Tests for Sorting Feature
-```shell
+npm run play:headed
+npm run test-l
+npm run test-c
 npm run test-s
 ```
-### Run Tests for Login Feature
-```shell
-npm run test-l
-```
-### Run Tests for Cart Feature
-```shell
-npm run test-c
-```
+
+## Быстрый старт на любой ОС
+
+1. `git clone <repo-url>`
+2. `cd playwright-ts-project`
+3. `npm run setup`
+4. `npm run play:test`
+
+## Частые проблемы
+
+### Cannot find module '@playwright/test' (ts2307)
+
+Причина: зависимости не установились локально.
+
+Что сделать:
+
+1. `npm install`
+2. `npx playwright install`
+3. Перезапустить TypeScript Server в IDE (или перезапустить IDE)
+
+## Формат лайвкодинга
+
+- Длительность сессии: 60 минут.
+- Во время выполнения можно задавать уточняющие вопросы.
+- Работай итеративно и запускай тесты по мере реализации.
+- Приоритет: читаемость и стабильность, а не покрытие всех возможных edge-case.
+
+## Область задания
+
+Реализуй тесты в файлах:
+
+- `test/Login.test.spec.ts`
+- `test/Cart.test.spec.ts`
+- `test/Sorting.test.spec.ts`
+
+В каждом файле есть `test.skip(...)` с нужными сценариями.
+
+Рекомендуемый порядок выполнения:
+
+1. `Login.test.spec.ts` (обязательный минимум)
+2. `Cart.test.spec.ts` (следующий приоритет)
+3. `Sorting.test.spec.ts` (если останется время)
+
+## Требования
+
+- Используй `@playwright/test` как раннер.
+- Сохраняй подход Page Object Model (объекты в `page/`).
+- Переиспользуй данные из `data/credentials.json`.
+- Избегай статических ожиданий (`waitForTimeout`), если они не абсолютно необходимы.
+- Пиши детерминированные проверки.
+
+## Критерии оценки
+
+- Корректность реализованных сценариев.
+- Читаемость и поддерживаемость кода.
+- Стабильность выполнения тестов.
+- Корректная структура и переиспользование существующих утилит проекта.
